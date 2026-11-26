@@ -60,9 +60,11 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
 The `.marprc.yml` also loads `marp-engine.mjs`, which handles videos on slides:
 
 ```html
-<video data-autoplay src="./clip.mp4" poster="./clip.png"></video>
+<video data-autoplay src="./clip.mp4" poster="./clip.png" width="854"></video>
 ```
 
+- **Size**: a video is centred and shows at its file's size, but never wider than the slide. Under a heading, a 16:9
+  video fits at a width of 854 or less.
 - **Autoplay** (opt-in with `data-autoplay`): the video plays muted from the start when its slide comes up, and pauses
   when the deck moves on. Only in the audience window, not in the presenter view.
 - **Full-window player**: a click on any slide video opens it full-window with working controls, at the same position.

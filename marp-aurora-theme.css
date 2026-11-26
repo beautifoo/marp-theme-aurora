@@ -382,14 +382,21 @@ section video[data-marp-video-overlay]::-webkit-media-controls {
   display: none !important;
 }
 
-/* Images
+/* Images and videos
  *
- * Centre every image on a line of its own. Marpit renders an image as an inline
- * <img>, which otherwise hugs the left padding edge like the text. Sizing stays
- * in the markdown via Marp's `![w:1160](...)` syntax. */
-section img {
+ * Centre every image and video on a line of its own. Marpit renders an image as
+ * an inline <img>, which otherwise hugs the left padding edge like the text.
+ * Image sizing stays in the markdown via Marp's `![w:1160](...)` syntax. A video
+ * has no such syntax and shows at its file's size, so it shrinks to the slide
+ * width. */
+section :is(img, video) {
   display: block;
   margin-inline: auto;
+}
+
+section video {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Marp renders each emoji as an <img class="emoji">, which the rule above would
