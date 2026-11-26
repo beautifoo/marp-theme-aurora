@@ -296,7 +296,9 @@ section mark {
   color: var(--color-background);
 }
 
-section mark a {
+/* Links and strong words take the mark's text colour, because the highlight is
+ * the box. */
+section mark :is(a, strong) {
   color: inherit;
 }
 
