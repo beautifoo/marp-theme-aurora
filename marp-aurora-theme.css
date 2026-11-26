@@ -92,18 +92,36 @@ section.lead {
   color-scheme: dark;
   background: radial-gradient(
       ellipse 20% 15px at 82% 100%,
-      color-mix(in oklab, var(--color-secondary) 70%, var(--color-light)),
-      color-mix(in srgb, var(--color-secondary) 60%, transparent) 50%,
+      color-mix(
+        in srgb,
+        color-mix(in oklab, var(--color-secondary) 70%, var(--color-light))
+          var(--glow, 100%),
+        transparent
+      ),
+      color-mix(
+          in srgb,
+          var(--color-secondary) calc(var(--glow, 100%) * 0.6),
+          transparent
+        )
+        50%,
       transparent
     ),
     radial-gradient(
       ellipse 40% 45% at 82% 100%,
-      color-mix(in srgb, var(--color-secondary) 8%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-secondary) calc(var(--glow, 100%) * 0.08),
+        transparent
+      ),
       transparent
     ),
     linear-gradient(
       0deg,
-      color-mix(in srgb, var(--color-secondary) 15%, transparent),
+      color-mix(
+        in srgb,
+        var(--color-secondary) calc(var(--glow, 100%) * 0.15),
+        transparent
+      ),
       transparent 15px
     ),
     linear-gradient(
@@ -118,6 +136,28 @@ section.lead {
         )
         94%
     );
+}
+
+/* In the HTML presenter the horizon glow fades in each time a lead slide
+ * becomes current. `bespoke-marp-active` is set only by Marp's presenter
+ * script, so exports, and viewers who ask for reduced motion, get the full
+ * glow. Without @property support the glow appears halfway through instead. */
+@property --glow {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+
+@keyframes glow {
+  from {
+    --glow: 0%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  section.lead:is(.bespoke-marp-active *) {
+    animation: glow 6s ease-out;
+  }
 }
 
 /* The sky runs to the top edge, without the stripe. */
