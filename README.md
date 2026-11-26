@@ -66,7 +66,8 @@ The `.marprc.yml` also loads `marp-engine.mjs`, which handles videos on slides:
 - **Size**: a video is centred and shows at its file's size, but never wider than the slide. Under a heading, a 16:9
   video fits at a width of 854 or less.
 - **Autoplay** (opt-in with `data-autoplay`): the video plays muted from the start when its slide comes up, and pauses
-  when the deck moves on. Only in the audience window, not in the presenter view.
+  when the deck moves on. Only in the audience window, not in the presenter view, and not for viewers who ask for
+  reduced motion. They can still click the video to open the full-window player.
 - **Full-window player**: a click on any slide video opens it full-window with working controls, at the same position.
   Esc or a click on the backdrop closes it, and the slide video moves to where the full-window one stopped.
 - **No inline controls**: inside Marp's scaled slides, Safari draws native controls at the wrong scale and Chromium

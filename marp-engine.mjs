@@ -4,7 +4,8 @@
  * Autoplay (opt-in with `data-autoplay`): the video starts from the top, muted, when its
  * slide becomes the current one, and pauses when the deck moves on. Only in the audience
  * window: the presenter view and its next-slide preview load with ?view=…, and playing
- * there would start the video before the audience sees the slide.
+ * there would start the video before the audience sees the slide. Never for a viewer who
+ * asks for reduced motion: there a click still opens the full-window player.
  *
  * Full-window player (every slide video): Marpit draws each slide inside a scaled
  * `<svg><foreignObject>`, and browsers do not handle native video controls in there.
@@ -94,7 +95,9 @@ const SCRIPT = `<style>
     });
   };
 
-  var autoplayHere = !new URLSearchParams(location.search).get("view");
+  var autoplayHere =
+    !new URLSearchParams(location.search).get("view") &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches;
   var syncAutoplay = function () {
     if (!autoplayHere) return;
     document.querySelectorAll("foreignObject video[data-autoplay]").forEach(function (video) {
