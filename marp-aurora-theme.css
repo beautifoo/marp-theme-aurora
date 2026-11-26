@@ -194,7 +194,8 @@ pre {
   font-family: var(--font-mono);
 }
 
-/* Lead's crimson is too light for code text on the white chip and block. */
+/* Mixed into the lead's dark crimson, the literal and comment tokens would reach
+ * only 5.3:1 on the white block, so lead code mixes into black instead. */
 section.lead code {
   --color-background: var(--color-dark);
 }
@@ -207,8 +208,8 @@ section.lead pre {
 
 /* Gaia's token colours are made for a black block, but the block is light on
  * invert and lead slides. Mixing each knob into the code text colour keeps its
- * hue and gives 7:1 on either block; past 45% the secondary drops below 7:1 on
- * a light block. */
+ * hue and gives 7:1 on either block. 45% leaves the secondary a margin on a
+ * light block (7.4:1 on invert slides); from 48% it drops below 7:1. */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-type {
