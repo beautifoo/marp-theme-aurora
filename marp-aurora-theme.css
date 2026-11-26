@@ -73,16 +73,56 @@ section {
 }
 
 /* Variant-specific section variables */
+/* Lead: a dawn sky. A violet hint above the crimson, then a rust horizon with
+ * a gamboge glint. Every stop keeps white and dimmed text at 4.5:1 or more,
+ * which is AAA for the theme's large text. */
 section.lead {
-  --color-background: var(--color-primary);
+  --color-background: color-mix(
+    in srgb,
+    var(--color-primary) 65%,
+    var(--color-dark)
+  );
   --color-highlight: var(--color-light);
+  --color-dimmed: color-mix(
+    in srgb,
+    var(--color-foreground) 95%,
+    var(--color-background)
+  );
 
   color-scheme: dark;
-  background: linear-gradient(
-    180deg,
-    var(--color-primary),
-    var(--color-secondary)
-  );
+  background: radial-gradient(
+      ellipse 20% 15px at 82% 100%,
+      color-mix(in oklab, var(--color-secondary) 70%, var(--color-light)),
+      color-mix(in srgb, var(--color-secondary) 60%, transparent) 50%,
+      transparent
+    ),
+    radial-gradient(
+      ellipse 40% 45% at 82% 100%,
+      color-mix(in srgb, var(--color-secondary) 8%, transparent),
+      transparent
+    ),
+    linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--color-secondary) 15%, transparent),
+      transparent 15px
+    ),
+    linear-gradient(
+      in oklch 180deg,
+      color-mix(in srgb, var(--color-primary) 70%, var(--color-tint)),
+      var(--color-primary) 30%,
+      color-mix(
+          in srgb,
+          color-mix(in srgb, var(--color-primary) 50%, var(--color-secondary))
+            80%,
+          var(--color-dark)
+        )
+        94%
+    );
+}
+
+/* The sky runs to the top edge, without the stripe. */
+section.lead::before {
+  display: none;
 }
 
 section.invert {
