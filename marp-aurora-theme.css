@@ -198,9 +198,10 @@ section.lead code {
   --color-background: var(--color-dark);
 }
 
-/* Lead's white highlight would vanish against the white block. */
+/* Lead's white highlight would vanish against the white block, and the crimson
+ * against the sky, so the stripe is black. */
 section.lead pre {
-  border-left-color: var(--color-primary);
+  border-left-color: var(--color-dark);
 }
 
 /* Gaia's token colours are made for a black block, but the block is light on
