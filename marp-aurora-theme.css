@@ -219,9 +219,11 @@ footer::before {
   vertical-align: middle;
 }
 
+/* 19px bold is large text in WCAG terms (from 18.66px), so it needs 4.5:1
+ * instead of 7:1 for AAA. */
 header,
 footer {
-  font-size: large;
+  font-size: 19px;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -236,7 +238,8 @@ footer code {
 section::after {
   content: attr(data-marpit-pagination) " / " attr(data-marpit-pagination-total);
   position: absolute;
-  font-size: large;
+  font-size: 19px;
+  font-weight: bold;
 }
 
 /* Images
