@@ -125,7 +125,14 @@ section.lead::before {
   display: none;
 }
 
+/* Invert: the night before the dawn, the crimson darkened almost to black. */
 section.invert {
+  --color-background: color-mix(
+    in srgb,
+    var(--color-primary) 15%,
+    var(--color-dark)
+  );
+
   color-scheme: dark;
 }
 
