@@ -57,18 +57,24 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
 ## Accessibility
 
 - **Contrast**: At the default 1280×720 size, the theme's text meets WCAG AAA contrast (success criterion 1.4.6).
-  On the 4K presets, shown on a 1080p screen, it meets AA.
+  On the 4K presets, shown on a 1080p screen, it meets AA. The contrast audit below measures these levels on the demo
+  and on the stress decks in `contrast/`.
 - **Lead slides**: Above the thin horizon line at the bottom edge, the sky keeps white text at 4.5:1 or more. That is
-  AAA for the theme's large text sizes. Smaller text that you add, for example with `<small>`, meets AA only.
+  AAA for large text, and the theme's text sizes are large: 33px body text, and 19px bold header, footer and page
+  number. Text that you add below 24px, or below 18.66px if bold, is only sure to meet AA. An example is `<small>` in a
+  header or footer.
+- **Emphasis**: A mark is a highlighter box, and a strong word in a heading is extra bold. So neither stands apart from
+  the text around it by color alone (success criterion 1.4.1).
 - **Custom colors**: The skies and accents are mixed from `--color-primary`, `--color-secondary` and `--color-tint`.
   The levels above apply to the default palette, so run the audit again after you change it.
-- **Motion**: In the HTML presenter, the horizon glow on a lead slide rises over 5 seconds when the slide opens. PDF,
-  PNG and PPTX exports show the risen sky, and so do viewers who ask for reduced motion.
+- **Motion**: In the HTML presenter, the horizon glow on a lead slide rises over 5 seconds when the slide opens. While
+  it rises the glow is dimmer, and the audit gives the same results at the start and halfway. PDF, PNG and PPTX exports
+  show the risen sky, and so do viewers who ask for reduced motion.
 
 ### Contrast audit
 
 `contrast/audit.ts` renders the demo and the stress decks in `contrast/`. Then it measures each text run against the
-pixels behind it. It needs Google Chrome.
+pixels behind it. It needs Node 22.18 or later and Google Chrome.
 
 ```sh
 npx -p @marp-team/marp-cli node contrast/audit.ts                           # AA, 1280×720
