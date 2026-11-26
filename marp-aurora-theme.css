@@ -366,14 +366,37 @@ section::after {
   font-weight: bold;
 }
 
-/* Images
+/* Video
  *
- * Centre every image on a line of its own. Marpit renders an image as an inline
- * <img>, which otherwise hugs the left padding edge like the text. Sizing stays
- * in the markdown via Marp's `![w:1160](...)` syntax. */
-section img {
+ * Marpit draws each slide inside a scaled `<svg><foreignObject>`, and native
+ * video controls do not work in there: Safari draws them at the wrong scale and
+ * clips them, Chromium only shows them while the pointer is moving. So
+ * marp-engine.mjs marks each slide video it takes over, hides its controls, and
+ * opens a full-window player with working controls on click. Without the engine
+ * a video keeps its native controls. */
+section video[data-marp-video-overlay] {
+  cursor: zoom-in;
+}
+
+section video[data-marp-video-overlay]::-webkit-media-controls {
+  display: none !important;
+}
+
+/* Images and videos
+ *
+ * Centre every image and video on a line of its own. Marpit renders an image as
+ * an inline <img>, which otherwise hugs the left padding edge like the text.
+ * Image sizing stays in the markdown via Marp's `![w:1160](...)` syntax. A video
+ * has no such syntax and shows at its file's size, so it shrinks to the slide
+ * width. */
+section :is(img, video) {
   display: block;
   margin-inline: auto;
+}
+
+section video {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Marp renders each emoji as an <img class="emoji">, which the rule above would
@@ -386,12 +409,13 @@ section img.emoji {
   vertical-align: -0.15em;
 }
 
-/* Marpit wraps a lone image in a <p>, which carries marp-core's
- * `margin: 1em 0 0`. At 33px that is a 33px gap the image could be using
- * instead, so drop it to a hairline and let the image bleed into the slide
+/* Marpit wraps a lone image or video in a <p>, which carries marp-core's
+ * `margin: 1em 0 0`. At 33px that is a 33px gap the media could be using
+ * instead, so drop it to a hairline and let the media bleed into the slide
  * padding on both sides. Emoji are images too, so they are left out. CSS can't
  * see text, so a paragraph of text with one other image matches as well. */
-section p:has(> img:not(.emoji):only-child) {
+section p:has(> img:not(.emoji):only-child),
+section p:has(> video:only-child) {
   margin-top: 0.15em;
   margin-inline: -25px;
 }

@@ -10,6 +10,7 @@
 - **Slide Variants**: A dawn-sky `lead` and a night-sky `invert` for emphasis.
 - **Accessible Contrast**: WCAG AAA contrast at the default size. See [Accessibility](#accessibility).
 - **Images and Emoji**: Images are centered on a line of their own, and emoji stay inline at text size.
+- **Slide Videos**: With Marp CLI, a video can autoplay on its slide, and a click opens it full-window.
 - **Pagination**: Displays current and total slide numbers.
 
 ## Demo
@@ -53,6 +54,25 @@ npx @marp-team/marp-cli --pdf demo.md  # demo.pdf
 ```
 
 From another folder, pass it with `--config-file path/to/.marprc.yml`.
+
+## Slide Videos
+
+The `.marprc.yml` also loads `marp-engine.mjs`, which handles videos on slides:
+
+```html
+<video data-autoplay src="./clip.mp4" poster="./clip.png" width="854"></video>
+```
+
+- **Size**: a video is centred and shows at its file's size, but never wider than the slide. Under a heading, a 16:9
+  video fits at a width of 854 or less.
+- **Autoplay** (opt-in with `data-autoplay`): the video plays muted from the start when its slide comes up, and pauses
+  when the deck moves on. Only in the audience window, not in the presenter view, and not for viewers who ask for
+  reduced motion. They can still click the video to open the full-window player.
+- **Full-window player**: a click on any slide video opens it full-window with working controls, at the same position.
+  Esc or a click on the backdrop closes it, and the slide video moves to where the full-window one stopped.
+- **No inline controls**: inside Marp's scaled slides, Safari draws native controls at the wrong scale and Chromium
+  shows them only while the pointer moves, so the theme and the engine hide them. Without the engine, a video keeps
+  its native controls.
 
 ## Accessibility
 
