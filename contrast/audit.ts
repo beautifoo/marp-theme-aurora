@@ -26,6 +26,7 @@ import {
   readdirSync,
   readFileSync,
   realpathSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { createRequire } from "node:module";
@@ -384,10 +385,16 @@ const browser = await puppeteer.launch({
     process.env.CHROME_PATH ??
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 });
-const runs = (
-  await Array.fromAsync(decks, (deck) => auditDeck(browser, deck))
-).flat();
-await browser.close();
+const runs = await (async () => {
+  try {
+    return (
+      await Array.fromAsync(decks, (deck) => auditDeck(browser, deck))
+    ).flat();
+  } finally {
+    await browser.close();
+    rmSync(tmp, { recursive: true, force: true });
+  }
+})();
 
 const judged = runs.map((run) => {
   const scaledSize = run.size * scale;
