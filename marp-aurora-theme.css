@@ -188,6 +188,11 @@ blockquote {
   font-style: italic;
 }
 
+/* A quote or a table inside a quote would stack a second stripe. */
+blockquote :is(blockquote, table) {
+  --color-background-stripe: transparent;
+}
+
 /* Emphasis
  *
  * A mark is a highlighter box and a strong word in a heading goes heavier, so
