@@ -67,13 +67,13 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
 
 ### Contrast audit
 
-`contrast/audit.mjs` renders the demo and the stress decks in `contrast/`. Then it measures each text run against the
+`contrast/audit.ts` renders the demo and the stress decks in `contrast/`. Then it measures each text run against the
 pixels behind it. It needs Google Chrome.
 
 ```sh
-npx -p @marp-team/marp-cli node contrast/audit.mjs                           # AA, 1280×720
-npx -p @marp-team/marp-cli node contrast/audit.mjs --level aaa               # AAA, 1280×720
-npx -p @marp-team/marp-cli node contrast/audit.mjs --size 16:9 --scale 0.5   # AA, 4K deck on a 1080p screen
+npx -p @marp-team/marp-cli node contrast/audit.ts                           # AA, 1280×720
+npx -p @marp-team/marp-cli node contrast/audit.ts --level aaa               # AAA, 1280×720
+npx -p @marp-team/marp-cli node contrast/audit.ts --size 16:9 --scale 0.5   # AA, 4K deck on a 1080p screen
 ```
 
 ## Extensions
