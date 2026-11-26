@@ -39,16 +39,25 @@ section::before {
   left: 0;
   width: 100%;
   height: 8px;
-  /* On light slides the stripe starts in the tint. */
-  background: linear-gradient(
-    90deg,
-    light-dark(var(--color-tint), var(--color-highlight)),
-    var(--color-highlight) 30%
-  );
+  /* The lead's dawn sky, turned on its side. */
+  background: linear-gradient(in oklch 90deg, var(--sky));
+}
+
+section.invert::before {
+  background: var(--color-highlight);
 }
 
 /* Section */
 section {
+  /* The dawn's colour stops, shared by the lead sky and the top stripe. */
+  --sky: color-mix(in srgb, var(--color-primary) 70%, var(--color-tint)),
+    var(--color-primary) 30%,
+    color-mix(
+        in srgb,
+        color-mix(in srgb, var(--color-primary) 50%, var(--color-secondary)) 80%,
+        var(--color-dark)
+      )
+      94%;
   --color-background: light-dark(var(--color-light), var(--color-dark));
   --color-foreground: light-dark(var(--color-dark), var(--color-light));
   --color-highlight: light-dark(var(--color-primary), var(--color-secondary));
@@ -124,18 +133,7 @@ section.lead {
       ),
       transparent 15px
     ),
-    linear-gradient(
-      in oklch 180deg,
-      color-mix(in srgb, var(--color-primary) 70%, var(--color-tint)),
-      var(--color-primary) 30%,
-      color-mix(
-          in srgb,
-          color-mix(in srgb, var(--color-primary) 50%, var(--color-secondary))
-            80%,
-          var(--color-dark)
-        )
-        94%
-    );
+    linear-gradient(in oklch 180deg, var(--sky));
 }
 
 /* In the HTML presenter the horizon glow fades in each time a lead slide
