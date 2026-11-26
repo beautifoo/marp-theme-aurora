@@ -204,10 +204,17 @@ section.lead pre {
   border-left-color: var(--color-dark);
 }
 
-/* Gaia's token colours are made for a black block, but the block is light on
- * invert and lead slides. Mixing each knob into the code text colour keeps its
- * hue and gives 7:1 on either block. 45% leaves the secondary a margin on a
- * light block (7.4:1 on invert slides); from 48% it drops below 7:1. */
+/* Gaia draws the block in the foreground colour, which is white on invert
+ * slides. There it stays black, as on light slides; lead slides keep the white
+ * block. */
+section.invert:not(.lead) pre {
+  --color-foreground: var(--color-dark);
+  --color-background: var(--color-light);
+}
+
+/* Gaia's token colours are made for a black block, but lead slides draw it
+ * white. Mixing each knob into the code text colour keeps its hue and gives
+ * 7:1 or more on the dark and the white blocks alike, with a margin at 45%. */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-type {
