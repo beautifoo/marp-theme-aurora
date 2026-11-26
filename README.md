@@ -57,8 +57,7 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
 ## Accessibility
 
 - **Contrast**: At the default 1280×720 size, the theme's text meets WCAG AAA contrast (success criterion 1.4.6).
-  On the 4K presets, shown on a 1080p screen, it meets AA. The contrast audit below measures these levels on the demo
-  and on the stress decks in `contrast/`.
+  On the 4K presets, shown on a 1080p screen, it meets AA. The contrast audit below measures these levels on the demo.
 - **Lead slides**: Above the thin horizon line at the bottom edge, the sky keeps white text at 4.5:1 or more. That is
   AAA for large text, and the theme's text sizes are large: 33px body text, and 19px bold header, footer and page
   number. Text that you add below 24px, or below 18.66px if bold, is only sure to meet AA. An example is `<small>` in a
@@ -73,8 +72,9 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
 
 ### Contrast audit
 
-`contrast/audit.ts` renders the demo and the stress decks in `contrast/`. Then it measures each text run against the
-pixels behind it. It needs Node 22.18 or later and Google Chrome.
+`contrast/audit.ts` renders `demo.md`, then measures each text run against the pixels behind it. The demo shows every
+slide type and layout case the theme styles, so keep that when you change it. The audit needs Node 22.18 or later and
+Google Chrome.
 
 ```sh
 npx -p @marp-team/marp-cli node contrast/audit.ts                           # AA, 1280×720

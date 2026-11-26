@@ -1,15 +1,16 @@
 /**
  * WCAG contrast audit for the Aurora theme.
  *
- * Renders each deck with Marp, reads every text run's colour, size and weight,
+ * Renders demo.md with Marp, reads every text run's colour, size and weight,
  * then hides the text and measures each run against the pixels that were behind
  * it, so gradients, stripes and chips count. A run's ratio is taken at its 1st
  * percentile worst pixel. The page number is measured; blockquote quote marks
- * are decoration and are not.
+ * are decoration and are not. The demo carries every slide type and layout case
+ * the theme styles, so keep it that way when you change it.
  *
- *   npx -p @marp-team/marp-cli node contrast/audit.ts [options] [deck.md ...]
+ *   npx -p @marp-team/marp-cli node contrast/audit.ts [options]
  *
- * With no decks it audits demo.md and contrast/*.md. Options:
+ * Options:
  *   --theme <css>    theme to audit (default: marp-aurora-theme.css)
  *   --size 16:9|4:3  render at the theme's size preset (the 4K slides)
  *   --scale <n>      judge text at n times its size, e.g. 0.5 for a 4K deck on a
@@ -23,7 +24,6 @@
 import { spawnSync } from "node:child_process";
 import {
   mkdtempSync,
-  readdirSync,
   readFileSync,
   realpathSync,
   rmSync,
@@ -57,7 +57,6 @@ interface TextRun {
 }
 
 interface MeasuredRun extends TextRun {
-  deck: string;
   ratio: number | null;
   background: Rgb | null;
 }
@@ -76,8 +75,7 @@ const toHex = (rgb: Rgb) =>
   `#${rgb.map((value) => Math.round(value).toString(16).padStart(2, "0")).join("")}`;
 
 const root = resolve(import.meta.dirname, "..");
-const { values: options, positionals } = parseArgs({
-  allowPositionals: true,
+const { values: options } = parseArgs({
   options: {
     theme: { type: "string", default: join(root, "marp-aurora-theme.css") },
     size: { type: "string" },
@@ -92,14 +90,7 @@ if (!isLevel(level)) {
 }
 const scale = Number(options.scale);
 
-const decks = positionals.length
-  ? positionals.map((deck) => resolve(deck))
-  : [
-      join(root, "demo.md"),
-      ...readdirSync(import.meta.dirname)
-        .filter((file) => file.endsWith(".md"))
-        .map((file) => join(import.meta.dirname, file)),
-    ];
+const deck = join(root, "demo.md");
 
 // npx -p puts marp on the PATH; puppeteer-core is one of its dependencies.
 const marp = spawnSync("sh", ["-c", "command -v marp"], {
@@ -377,7 +368,7 @@ const auditDeck = async (browser, deck: string): Promise<MeasuredRun[]> => {
     },
   );
   await page.close();
-  return measured.flat().map((run) => ({ ...run, deck: basename(deck) }));
+  return measured.flat();
 };
 
 const browser = await puppeteer.launch({
@@ -387,9 +378,7 @@ const browser = await puppeteer.launch({
 });
 const runs = await (async () => {
   try {
-    return (
-      await Array.fromAsync(decks, (deck) => auditDeck(browser, deck))
-    ).flat();
+    return await auditDeck(browser, deck);
   } finally {
     await browser.close();
     rmSync(tmp, { recursive: true, force: true });
@@ -422,7 +411,7 @@ console.log(
 );
 unmeasured.forEach((run) =>
   console.log(
-    `not measured: "${run.text}" (${run.deck} #${run.slide + 1}), ${
+    `not measured: "${run.text}" (slide ${run.slide + 1}), ${
       run.rgb == null
         ? `unknown colour ${run.colorText}`
         : "no pixels on the slide"
@@ -430,20 +419,15 @@ unmeasured.forEach((run) =>
   ),
 );
 
-const lowestRatio = (group: typeof failing) =>
-  Math.min(...group.map((run) => run.ratio ?? 0));
-[...Map.groupBy(failing, (run) => run.label)]
-  .sort(([, a], [, b]) => lowestRatio(a) - lowestRatio(b))
-  .forEach(([label, group]) => {
-    const worst = group.reduce((a, b) =>
-      (a.ratio ?? 0) < (b.ratio ?? 0) ? a : b,
-    );
+failing
+  .toSorted((a, b) => (a.ratio ?? 0) - (b.ratio ?? 0))
+  .forEach((run) =>
     console.log(
-      `${(worst.ratio ?? 0).toFixed(2)} need ${requiredRatio(level, worst.large)} ${label} on ${
-        worst.background == null ? "?" : toHex(worst.background)
-      } ${+worst.scaledSize.toFixed(1)}px/${worst.weight} x${group.length} e.g. "${worst.text}" (${worst.deck} #${worst.slide + 1})`,
-    );
-  });
+      `${(run.ratio ?? 0).toFixed(2)} need ${requiredRatio(level, run.large)} ${run.label} on ${
+        run.background == null ? "?" : toHex(run.background)
+      } ${+run.scaledSize.toFixed(1)}px/${run.weight} "${run.text}" (slide ${run.slide + 1})`,
+    ),
+  );
 
 process.exit(
   failing.length || unmeasured.some((run) => run.rgb == null) ? 1 : 0,
