@@ -139,9 +139,10 @@ section.lead {
 }
 
 /* In the HTML presenter the horizon glow fades in each time a lead slide
- * becomes current. `bespoke-marp-active` is set only by Marp's presenter
- * script, so exports, and viewers who ask for reduced motion, get the full
- * glow. Without @property support the glow appears halfway through instead. */
+ * becomes current. Only Marp's presenter script sets `bespoke-marp-active`, on
+ * the slide's svg, so exports, and viewers who ask for reduced motion, get the
+ * full glow. 5 seconds stays within WCAG 2.2.2. Without @property support the
+ * glow appears in one step instead. */
 @property --glow {
   syntax: "<percentage>";
   inherits: false;
@@ -156,7 +157,7 @@ section.lead {
 
 @media (prefers-reduced-motion: no-preference) {
   section.lead:is(.bespoke-marp-active *) {
-    animation: glow 6s ease-out;
+    animation: glow 5s ease-out;
   }
 }
 

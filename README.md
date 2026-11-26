@@ -62,7 +62,7 @@ From another folder, pass it with `--config-file path/to/.marprc.yml`.
   AAA for the theme's large text sizes. Smaller text that you add, for example with `<small>`, meets AA only.
 - **Custom colors**: The skies and accents are mixed from `--color-primary`, `--color-secondary` and `--color-tint`.
   The levels above apply to the default palette, so run the audit again after you change it.
-- **Motion**: In the HTML presenter, the horizon glow on a lead slide rises over 6 seconds when the slide opens. PDF,
+- **Motion**: In the HTML presenter, the horizon glow on a lead slide rises over 5 seconds when the slide opens. PDF,
   PNG and PPTX exports show the risen sky, and so do viewers who ask for reduced motion.
 
 ### Contrast audit
