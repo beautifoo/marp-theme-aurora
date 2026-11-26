@@ -58,6 +58,12 @@ section {
         var(--color-dark)
       )
       94%;
+  /* The night sky of invert slides, the crimson darkened almost to black. */
+  --color-night: color-mix(
+    in srgb,
+    var(--color-primary) 15%,
+    var(--color-dark)
+  );
   --color-background: light-dark(var(--color-light), var(--color-dark));
   --color-foreground: light-dark(var(--color-dark), var(--color-light));
   --color-highlight: light-dark(var(--color-primary), var(--color-secondary));
@@ -164,13 +170,9 @@ section.lead::before {
   display: none;
 }
 
-/* Invert: the night before the dawn, the crimson darkened almost to black. */
+/* Invert: the night before the dawn. */
 section.invert {
-  --color-background: color-mix(
-    in srgb,
-    var(--color-primary) 15%,
-    var(--color-dark)
-  );
+  --color-background: var(--color-night);
 
   color-scheme: dark;
 }
@@ -210,6 +212,15 @@ section.lead pre {
 section.invert:not(.lead) pre {
   --color-foreground: var(--color-dark);
   --color-background: var(--color-light);
+}
+
+/* On light slides the block takes the night sky, lifted a little. */
+section:not(.invert, .lead) pre {
+  --color-foreground: color-mix(
+    in srgb,
+    var(--color-light) 8%,
+    var(--color-night)
+  );
 }
 
 /* Gaia's token colours are made for a black block, but lead slides draw it
