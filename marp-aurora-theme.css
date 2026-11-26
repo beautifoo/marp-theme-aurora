@@ -302,6 +302,12 @@ section mark :is(a, strong) {
   color: inherit;
 }
 
+/* A lead table header is white like the lead's mark, so the box turns dark. */
+section.lead thead mark {
+  background: var(--color-background);
+  color: var(--color-light);
+}
+
 section :is(h1, h2, h3, h4, h5, h6) strong {
   font-weight: 900;
 }
